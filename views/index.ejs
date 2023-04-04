@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Barlow&family=PT+Sans&display=swap');
+
+:root{
+    --dark: #2b2d42;
+    --light: #adb5bd;
+    --border: #dee2e6;
+    --border-btn: #edf2f4;
+}
+
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+a {
+  text-decoration: none;
+  font-family: 'PT Sans', sans-serif;
+}
+.container{
+    max-width: 1024px;
+    margin: auto;
+}
+
+.nav-brand{
+    font-size: 1.5em;
+    font-weight: bold;
+}
+
+.d-flex{
+    display: flex;
+    flex-wrap: wrap;
+}
+.justify-between{
+    justify-content: space-between;
+}
+
+.text-center{
+    text-align: center;
+}
+
+.border-shadow{
+    border: 1px solid var(--border-btn);
+    box-shadow: 1px 3px 10px #e9ecef;
+}
+
+.text-dark{
+    color: var(--dark);
+}
+
+.inline{
+    display: inline-block;
+}
+
+.text-light{
+    color: var(--light);
+}
+
+.text-gradient{
+    background: linear-gradient(to right, #8e2de2, #4a00e0);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+#header nav{
+    background-color: #06d6a0;
+    padding: 1em 0;
+    width: 100%;
+}
+#site-main{
+    margin-top: 6em;
+    font-family: 'Barlow', sans-serif;
+}
+
+#site-main .container .box-nav > a{
+    font-size: 1em;
+    padding: .5em 1em;
+}
+
+#site-main .container form{
+    margin: 2em 0;
+}
+table{
+    border-spacing: 0px;
+    width: 100%;
+}
+
+.table td, .table th{
+    padding: .75em;
+    vertical-align: top;
+    text-align: center;
+    border-top: 1px solid var(--border);
+}
+
+.table td > a.btn{
+    padding: .3em 1em;
+    font-size: 1.1em;
+    margin: 0 .2em;
+}
+
+.table tr:hover{
+    background-color:#06d6a0 ;
+}
+
+.table tr:hover td > a{
+    box-shadow: none;
+}
+
+.table .thead-dark th{
+    color: #fff;
+    background-color: var(--dark) ;
+    border-color: #32383e;
+}
+
+@media only screen and (max-width: 1024px){
+    table, thead, tbody, th, td, tr{
+        display: block;
+    }
+
+    thead tr{
+        position: absolute;
+        top: -9999px;
+        left: -9999px;
+    }
+
+    tr { border: 1px solid var(--border);}
+
+    td{
+        border: none;
+        position: relative;
+    }
+
+}
+
+  </style>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CRUD Application</title>
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css">
+  
+</head>
+<body>
+  <!--header-->
+    <header id="header">
+      <nav>
+        <div class="container">
+          <div class="text-center">
+            <a href="/" class="nav-brand text-dark">User Management System</a>
+          </div>
+        </div>
+      </nav>
+    </header>
+  <!--header-->
+  <!-- Main Site -->
+  <main id="site-main">
+    <div class="container">
+        <div class="box-nav d-flex justify-between">
+            <a href="/add-user" class="border-shadow">
+                <span class="text-gradient">New User <i class="fas fa-user"></i></span>
+            </a>
+        </div>
+
+        <!-- form handling -->
+        <form action="/" method="POST">
+            <table class="table">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>@Email</th>
+                        <th>Gender</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <%- include('include/show') %>
+                    <!-- <tr>
+                      <td>1</td>
+                      <td>Username</td>
+                      <td>example@gmail.com</td>
+                      <td>Male</td>
+                      <td>Active</td>
+                      <td>
+                        <a href="/update-user" class="btn border-shadow update">
+                          <span class="text-gradient"><i class="fas fa-pencil-alt"></i></span>
+                        </a>
+                        <a href="#" class="btn border-shadow update">
+                          <span class="text-gradient"><i class="fas fa-times"></i></span>
+                        </a>
+                      </td>
+                    </tr> -->
+                </tbody>
+            </table>
+        </form>
+        <!-- <%= users %> -->
+    </div>
+</main>
+<!-- /Main Site -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js" integrity="sha512-pumBsjNRGGqkPzKHndZMaAG+bir374sORyzM3uulLV14lN5LyykqNk8eEeUlUkB3U0M4FApyaHraT65ihJhDpQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script>
+    
+    $("#add_user").submit(function(event){
+    alert("Data inserted successfully!");
+    })
+
+    if(window.location.pathname == '/') {
+        $ondelete = $(".table tbody td a.delete");
+        $ondelete.click(function(){
+            var id = $(this).attr("data-id");
+
+            var request = {
+                "url" : `http://localhost:3000/api/users/${id}`,
+                "method": "DELETE"
+            }
+
+            if(confirm("Do you really want to delete this user?")){
+                $.ajax(request).done(function(response){
+                    alert('Data deleted successfully');
+                    location.reload();
+                })
+            }
+        })
+    }
+</script>
+</body>
+</html>
